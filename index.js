@@ -1,15 +1,18 @@
-const express = require('express');
-const { resolve } = require('path');
+const express = require('express')
+const mongoose = require('mongoose')
+require('dotenv').config()
+const app = express()
 
-const app = express();
-const port = 3010;
+const PORT = process.env.PORT || 5000
 
-app.use(express.static('static'));
+mongoose.connect(process.env.MONGO_URI,{useNewUrlParser:true,useUnifiedTopology:true})
+.then(()=>console.log("Connected to database"))
+.catch((error)=>console.error("Error connecting to database",error))
 
-app.get('/', (req, res) => {
-  res.sendFile(resolve(__dirname, 'pages/index.html'));
-});
+app.get('/',(req,res)=>{
+  res.send("API is running")
+})
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+app.listen(PORT,()=>{
+  console.log(`server is running on http://localhost:${PORT}`)
+})
